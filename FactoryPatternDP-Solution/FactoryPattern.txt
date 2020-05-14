@@ -1,0 +1,86 @@
+Factory Pattern /Simple Factory Pattern 
+========================================
+we can create object using new operator with/wihout params
+we can create object having dependent object.
+we can create object using newInstance() method
+
+Instead of making multiple developers knowing the complex process of certain class obj creation
+with/withoit dependents. if we provide factory to them it take care of object creation process and simplifies
+object creation.
+
+Factory pattern abstraction on object creation process and creates returns one of several class object based
+on the data/inputs we supply. Supply several related classes means all these classes shold hava common super class
+or common implementing interface.
+
+BiscuitFactory gives buiscuits with out exposing their creational process
+CarFactory gives car with out exposing their manufacturing process
+
+DriverManager.getConnection(-,-,-); is based factory pattern bcz it returnn jdbc con object as the object created for one
+impl class of Connection() based on the data(url, user, pwd) that are supplied. Iny this process it abstract 
+howt it is crating dependent object and how it using them in connection object creation.
+
+Spring IOC container is given based on Factory pattern 
+
+factory.getBean()/ ctx.getBean()
+gives spring bean obj having dependent object with out exposing their construction process.
+
+All the statements in jdbc code that are given to create statement, connection, ResultSet objects 
+are working based on factory pattern.
+
+In hibernate SessionFactory, Session object we create based on factory pattern 
+
+Connection con  = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", -, -);
+	gives the obj of T4C connection class
+
+	Connection con = DriverManager.getConnection("jdbc:mysql://db1", "", "");
+
+	gives the object of MySqlConnection class.
+
+Creating main and dependent obj manually by knowing there constructor process and assigning dependent objs
+to main class manually is complex process
+
+solution
+=======
+	use factory pattern having helper class factory method which takes care the above process
+	internally and gives main object having depenedent obj to developers when ever it is required.
+
+
+while creating car object based on the given data(car type) we should know how should create their 
+dependent objs like (Tyre obj, Ac Obj and etc) and we should 
+
+In factory pattern class we generally take static factory method having capability returning one of the
+several related class obj based on the data that is passed.
+
+package com.rahul.factory;
+
+import com.rahul.tyre.AppoloTyre;
+import com.rahul.tyre.MRFTyre;
+import com.rahul.tyre.MichelinTyre;
+import com.rahul.tyre.Tyre;
+import com.rahul.vehicle.Car;
+import com.rahul.vehicle.LuxoryCar;
+import com.rahul.vehicle.SportCar;
+import com.rahul.vehicle.StandardCar;
+
+public class CarFactory {
+	public static Car getCarInstance(String carType) {
+		Car car = null;
+		Tyre tyre = null;
+		
+		if(carType.equalsIgnoreCase("standard")) {
+			tyre = new AppoloTyre();
+			car = new StandardCar(tyre);
+		} else if(carType.equalsIgnoreCase("luxory")) {
+			tyre = new MichelinTyre();
+			car = new LuxoryCar(tyre);
+		} else if(carType.equalsIgnoreCase("sport")) {
+			tyre =new MRFTyre();
+			car = new SportCar(tyre);
+		} else
+			throw new IllegalArgumentException("Invalid car type");
+		
+		return car;
+	}
+}
+
+
