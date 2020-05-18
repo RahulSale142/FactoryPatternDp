@@ -9,6 +9,7 @@ import com.rahul.vehicle.LuxoryCar;
 public class CarDealer1 {
 
 	public static void main(String[] args) {
+		System.out.println("CarDealer1.main()");
 		System.out.println("Sports car dealer");
 		Car car = null;
 		//get instance
